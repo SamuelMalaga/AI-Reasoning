@@ -11,6 +11,7 @@
 1. Clone the remote repository to your machine via ``` git clone https://github.com/SamuelMalaga/AI-Reasoning.git ```
 
 ### If you already have the repo locally
+### Obs: If you are not sure how to use git, before commiting do a local backup of what you have 
 1. Check for changes in the main branch (important step to not overwrite the latest changes) ```git fetch```
 2. Create a branch to carry on with your contribution ```git checkout -b <branch_name>```
 3. After you finish the modifications, do the following sequence
