@@ -39,4 +39,4 @@ test_grid.addNodeToGrid(node_3)
 print(test_grid.__str__())
 print(test_grid.word_conditions)
 
-test_grid.check_grid_integrity()
+test_grid.check_stopping_condition()

@@ -50,33 +50,72 @@ class Grid:
                     }
         return created_grid, word_conditions
     
-    def check_grid_integrity(self):
+    def check_stopping_condition(self):
+        """"
+            Check if any of the conditions specified for the grid are violated by the values on it
+            - Return:
+                True 
+                    if there is no constraint violation
+                False
+                    if there is constraint violation
+        """
         for k, v in self.word_conditions.items():
-            # print(type(k), type(v))
             placed_word_node = self.generated_grid[k]
             word_conditions = v
-            print(f"checking the following word restrictions: |{placed_word_node.word}| at position |{k}|")
+            ##DEBUG
+            # print(f"checking the following word restrictions: |{placed_word_node.word}| at position |{k}|")
             ##Check lenght condition
             if len(placed_word_node.word) != word_conditions["lenght"]:
-                raise ValueError(f"The lenght of the word in the position -> |{k}| was expected to be |{word_conditions["lenght"]}| .The obtained value was {len(placed_word_node.word)} from the word {placed_word_node.word}")
+                return False
+                # raise ValueError(f"The lenght of the word in the position -> |{k}| was expected to be |{word_conditions["lenght"]}| .The obtained value was {len(placed_word_node.word)} from the word {placed_word_node.word}")
+            
             ##Check crossing position constraints
             for char_position, cross_at_value in word_conditions["cross_positions"].items():
                 ##Extractors from the cross at value element
+
                 ####Extract the corresponding match word position
-                re_word_to_match_position = re.search(r"^[A-Za-z0-9]+",cross_at_value)
-                word_to_match_position = re_word_to_match_position.group(0)
+                word_to_match_position = self._extract_word_grid_position(cross_at_value)
+
                 ####Extract the corresponding matching word charachter position
-                re_word_to_match_char_position = re.search(r"(?<=\()\d+(?=\))",cross_at_value)
-                word_to_match_char_position = re_word_to_match_char_position.group(0)
-                print(f"\t cross: {k}({char_position}) = {cross_at_value}")
-                # print(f"\t cross: {placed_word_node.word[char_position-1]} = {cross_at_value}")
-                print(f"\t word_to_match_position = {word_to_match_position} | word_to_match_char_position = {word_to_match_char_position}")
-                print(f"\t comparing {k}({char_position}) = {placed_word_node.word.upper()[char_position-1]} to {cross_at_value} = {self.generated_grid[word_to_match_position].word[int(word_to_match_char_position)-1]}")
-                if placed_word_node.word.upper()[char_position-1] == self.generated_grid[word_to_match_position].word.upper()[int(word_to_match_char_position)-1]:
-                    print("\t they match")
+                char_pos = self._extract_word_grid_char_position(cross_at_value)
+                
+                #DEBUG
+                # print(f"\t cross: {k}({char_position}) = {cross_at_value}")
+                # print(f"\t word_to_match_position = {word_to_match_position} | word_to_match_char_position = {char_pos}")
+                # print(f"\t comparing {k}({char_position}) = {placed_word_node.word.upper()[char_position-1]} to {cross_at_value} = {self.generated_grid[word_to_match_position].word[char_pos]}")
+                if placed_word_node.word.upper()[char_position-1] == self.generated_grid[word_to_match_position].word.upper()[char_pos]:
+                    #Debug
+                    # print("\t they match")
+                    return True
                 else:
-                    print("\t they dont match")
-                print("\b") 
+                    #Debug
+                    # print("\t they dont match")
+                    return False
+                # print("\b") 
+
+    def _extract_word_grid_char_position(self, position_string) -> str:
+        """
+            - Input:
+                position_string: str -> formatted string that contains a word position on a grid
+            - Output:
+                char_position_in_word: int -> A string that specifies the position of a char in a word
+        """
+        re_word_to_match_char_position = re.search(r"(?<=\()\d+(?=\))",position_string)
+        str_char_position_in_word = re_word_to_match_char_position.group(0)
+        char_position_in_word = int(str_char_position_in_word) - 1
+        return char_position_in_word
+    
+    def _extract_word_grid_position(self,position_string) -> str:
+        """
+            - Input:
+                position_string: str -> formatted string that contains a word position on a grid
+            - Output:
+                word_position_in_grid: str -> A string that specifies a key of the generated grid dictionary
+        """
+        re_word_to_match_position = re.search(r"^[A-Za-z0-9]+",position_string)
+        word_position_in_grid = re_word_to_match_position.group(0)
+
+        return word_position_in_grid
 
             
 
