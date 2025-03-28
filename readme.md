@@ -75,6 +75,6 @@ grid_input_example = {
     1. Add all the modifications to the commit ```git add .```
     2. Add a message to the commit ```git commit -m "<your_message>"```
     3. If you want your commit to be reviewed ```git push origin <branch_name>```
-4. (Optional) To commit directly to the main branch ```git checkout -b main```
+4. (Optional) To commit directly to the main branch ```git checkout main```
 5. (Optional) Merge the changes in the branch to the main ```git merge <branch_name>```
 6. (Optional) Push the changes to origin ```git push origin main```
