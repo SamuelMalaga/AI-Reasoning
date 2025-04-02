@@ -116,10 +116,13 @@ class Grid:
         word_position_in_grid = re_word_to_match_position.group(0)
 
         return word_position_in_grid
+    
+    def get_avaliable_positions_on_grid(self):
+        return list(self.generated_grid.keys())
 
             
 
     def __str__(self):
         for k,v in self.generated_grid.items():
-            print(f"for key {k}, word {v.word}")
+            print(f"for position {k}, word {v}")
         return""
