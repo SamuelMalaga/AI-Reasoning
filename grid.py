@@ -24,7 +24,7 @@ class Grid:
             raise ValueError("The position is already filled with a value")
         
     def addWordToGrid(self,node : Node):
-        print(f"Adding node to position {node.position} with value {node.word}")
+        # print(f"Adding node to position {node.position} with value {node.word}")
         added_node_position = node.position
         word_at_position = self.generated_grid[added_node_position]['word']
         if word_at_position is None:
@@ -64,6 +64,48 @@ class Grid:
                     }
         return created_grid, word_conditions
     
+    def _generate_node_list_by_node(self, node):
+        node_list = []
+        current_node = node
+        while current_node.word is not None:
+            node_list.append(current_node)
+            tmp = current_node.parent
+            current_node = tmp
+        return node_list
+
+    def check_solving(self, node:Node):
+        current_node = node
+        nodes_list = self._generate_node_list_by_node(node)
+
+        ## Check positional constraints and lenght constraing
+        while current_node.word is not None:
+            current_node_position = current_node.position
+            current_node_word = current_node.word
+            # print(f"checking the following word restrictions: |{current_node_word}| at position |{current_node_position}|")
+            if len(current_node_word) != self.generated_grid[current_node_position]['lenght']:
+                return False
+            for char_position, cross_at_value in self.generated_grid[current_node_position]['cross_positions'].items():
+                ####Extract the corresponding match word position
+                word_to_match_position = self._extract_word_grid_position(cross_at_value)
+
+                ####Extract the corresponding matching word charachter position
+                char_pos = self._extract_word_grid_char_position(cross_at_value)
+                # print(f"\t {word_to_match_position}")
+                ### get the word to compare
+                for node in nodes_list:
+                    if node.position == word_to_match_position:
+                        word_to_compare = node.word
+                # print(f"\t {word_to_compare}")
+                if current_node_word.upper()[char_position-1] != word_to_compare.upper()[char_pos]:
+                    #Debug
+                    # print("\t they match")
+                    return False
+            # print(current_node)
+            tmp = current_node.parent
+            current_node = tmp
+            # print("\b")
+        return True
+    
     def check_stopping_condition(self):
         """"
             Check if any of the conditions specified for the grid are violated by the values on it
@@ -73,15 +115,15 @@ class Grid:
                 False
                     if there is constraint violation
         """
-        print("items:", list(self.generated_grid.items()))
+        # print("items:", list(self.generated_grid.items()))
         for item in list(self.generated_grid.items()):
             k,v = item
-            print("Key",k)
-            print("value",v)
+            # print("Key",k)
+            # print("value",v)
             placed_word = self.generated_grid[k]['word']
             word_conditions = v
             ##DEBUG
-            print(f"checking the following word restrictions: |{placed_word}| at position |{k}|")
+            # print(f"checking the following word restrictions: |{placed_word}| at position |{k}|")
             ##Check lenght condition
             if len(placed_word) != self.generated_grid[k]['lenght']:
                 return False
@@ -136,6 +178,9 @@ class Grid:
     def get_avaliable_positions_on_grid(self):
         return list(self.generated_grid.keys())
 
+    def clear_grid(self):
+        for position, value in self.generated_grid.items():
+            self.generated_grid[f"{position}"]['word'] = None
             
 
     def __str__(self):

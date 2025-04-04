@@ -2,12 +2,18 @@ class Node:
     
     parent = None
 
-    def __init__(self,word:str, position:str):
+    def __init__(self,word:str, position:str, parent = None,positions_snapshot = None,used_words_snapshot = None):
         self.word = word
         self.position = position
+        self.parent = parent
+        self.positions_snapshot = positions_snapshot
+        self.used_words_snapshot = used_words_snapshot
 
     def __str__(self):
-        return f"This is a node at the position {self.position} with the value {self.word}"
+        return f"{self.position}={self.word}"
+
+    def __repr__(self):
+        return f"Node(pos:{self.position},word:{self.word})"
 
     def __eq__(self, another_node):
         if not isinstance(another_node, Node):
