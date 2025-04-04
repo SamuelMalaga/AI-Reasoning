@@ -2,12 +2,14 @@ class Node:
     
     parent = None
 
-    def __init__(self,word:str, position:str, parent = None,positions_snapshot = None,used_words_snapshot = None):
+    def __init__(self,word:str, position:str, parent = None,positions_snapshot = None,used_words_snapshot = None, layer = 0, starting_node=False):
         self.word = word
         self.position = position
         self.parent = parent
         self.positions_snapshot = positions_snapshot
         self.used_words_snapshot = used_words_snapshot
+        self.layer = layer
+        self.starting_node = starting_node
 
     def __str__(self):
         return f"{self.position}={self.word}"

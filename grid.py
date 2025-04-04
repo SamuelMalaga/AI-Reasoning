@@ -76,6 +76,7 @@ class Grid:
     def check_solving(self, node:Node):
         current_node = node
         nodes_list = self._generate_node_list_by_node(node)
+        print("Passed nodes list: ", nodes_list)
 
         ## Check positional constraints and lenght constraing
         while current_node.word is not None:

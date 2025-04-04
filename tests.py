@@ -9,7 +9,7 @@ test_grid_input = {
     2: [("A",3,{1:"1D(3)"})]
 }
 # test_avaliable_words = ["Dog", "Dad", "Day", "Buy", "Map","Sun"]
-test_avaliable_words = [ "Buy", "Dog", "Day", "Dad"]
+test_avaliable_words = [ "Buy", "Dog", "Day", "dad","Sad"]
 
 # print(test_grid_input)
 
