@@ -1,16 +1,18 @@
 from grid import Grid
 from node import Node
-from dfs import basicDFS
+from dfs import basicDFS, loading, DFS_len_filter
 import pandas as pd
 
 
 test_grid_input = {
     1: [("A",3,{1:"1D(1)"}),("d",3,{1:"1A(1)",3:"2A(1)"})],
-    2: [("A",3,{1:"1D(3)"})]
+    2: [("A",4,{1:"1D(3)"})]
 }
 # test_avaliable_words = ["Dog", "Dad", "Day", "Buy", "Map","Sun"]
-test_avaliable_words = [ "Buy", "Dog", "Day", "dad","Sad"]
+test_avaliable_words = [ "DAD","Abys", "DUD", "DBD","oooo","EEEEE","aaaaa","ZZZZZ","PPPPPPs","aaaaaa","BBBBBB","AAAADASDA"]
 
+with open('words_small.txt', 'r') as f:
+    small_dictionary = [line.split(',') for line in f.read().splitlines()]
 # print(test_grid_input)
 
 test_grid = Grid(test_grid_input)
@@ -45,7 +47,7 @@ node_3 = Node("Day", "2A", parent=node_2)
 # test_grid.addWordToGrid(node_2)
 # test_grid.addWordToGrid(node_3)
 
-# # print(test_grid.__str__())
+# print(test_grid.get_lenght_position_restrictions("1A"))
 # # print(test_grid.word_conditions)
 
 # print("GRID WITH ADDED WORDS:", test_grid.generated_grid)
@@ -54,8 +56,11 @@ node_3 = Node("Day", "2A", parent=node_2)
 # print(test_grid.check_stopping_condition())
 # ## -------------Testing on DFS
 # print(f"{node_1==node_4}")
-basicDFS(test_grid,test_avaliable_words)
+DFS_len_filter(test_grid,small_dictionary)
 
+
+# print(len(small_dictionary))
+# print(type(small_dictionary))
 # df = pd.read_csv("words.txt",header=None, names=["word"])
 
 # # Check the first few words
@@ -70,3 +75,31 @@ basicDFS(test_grid,test_avaliable_words)
 
 # print(test_grid.generated_grid)
 # print(test_grid.word_conditions)
+
+# loading()
+print("-------TEsting")
+
+# print(test_grid.get_crossing_position_restrictions("1D"))
+
+# # /^.{<position>}[<chars>]/ -> regex to find a letter in a position
+
+# # df.columnA.str.findall(r'\b[tbTB]\w+')
+
+# # foo[foo.b.str.contains('oo', regex= True, na=False)]
+
+# test_dataframe = pd.DataFrame(small_dictionary,columns=['words'])
+
+# # print(test_dataframe.words)
+
+# # df[(df.A == 1) & (df.D == 6)] ^.{9}(?:C|F|E)
+
+# # regex for restricted strings: '^.{<position of the first char>}[<first_char>].{<distance between the first char and second char>}[second_char]' 
+
+# regex_lenght = test_grid.lenghts_restrictions_in_grid()
+
+# print(test_grid.lenghts_restrictions_in_grid())
+
+# filtered = test_dataframe[test_dataframe['words'].str.len().isin([3,4])]
+
+# print(filtered)
+# test_grid.generate_regex_for_position_restriction("Teste","1d")

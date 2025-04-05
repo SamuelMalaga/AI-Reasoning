@@ -151,6 +151,25 @@ class Grid:
                     return False
                 # print("\b") 
         return True
+    
+    def get_lenght_position_restrictions(self, pos_string:str)->str:
+        pos_string = pos_string.upper()
+        len_restriction = self.generated_grid[pos_string]['lenght']
+        return len_restriction
+    
+    def get_crossing_position_restrictions(self, pos_string:str)->dict:
+        pos_string = pos_string.upper()
+        crossing_restrictions = self.generated_grid[pos_string]['cross_positions']
+        return crossing_restrictions
+
+    def lenghts_restrictions_in_grid(self):
+        observed_lenghts=[]
+        for position_string, restrictions in self.generated_grid.items():
+            lenght_restriction = restrictions['lenght']
+            if lenght_restriction not in observed_lenghts:
+                observed_lenghts.append(lenght_restriction)
+                
+        return observed_lenghts
 
     def _extract_word_grid_char_position(self, position_string) -> str:
         """
