@@ -24,3 +24,7 @@ class Node:
             return True
         else:
             return False 
+
+    def __hash__(self):
+        # Return a hash based on the relevant attributes (word, position, and layer)
+        return hash((self.word, self.position, self.layer))

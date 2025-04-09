@@ -1,5 +1,5 @@
 from grid import Grid
-from node import Node
+from DFSNode import Node
 import itertools
 import pandas as pd
 import time
@@ -148,79 +148,38 @@ def DFS_len_filter(grid:Grid, avaliable_words:list):
         print("\n")
     print("timediff:",datetime.datetime.now() - t0)
 
-#Returns the recursive call returns true, the algorithm stops, if false, it continues
-def recursiveDFS(reference_grid: Grid, node_list, current_depth, words_dictionary):
-    #Check stopping condition
-    if current_depth == reference_grid.grid_size:
-        print("Found solution:", reference_grid)
-        return True  # stop after first solution (can be adapted)
 
-    #get lenght constraint
-    length = word_lengths[current_depth]
-    #Get starting letter constraint
-    first_letter = starting_letters[current_depth]
+# recursiveDFS(current_node:Node, grid:Grid, nodes_to_explore:list, current_depth:int, words_dictionary:dict, avaliable_positions:list):
 
-    #Lazy generate candidate
-    for candidate in generate_candidates(current_depth, words_dictionary):
-        ## check if the current node satisfies the constraint
-        if satisfies_constraints(candidate, grid):  # prune early based on leght
-            ##Add the node into the node_list
-            grid.append(candidate)
-            ##Link to the next call on the stack
-            if dfs(grid, depth + 1, max_depth, word_lengths, starting_letters):
-                return True  # propagate success
-            ## Does not return true, backtrack
-            grid.pop()  # backtrack
 
-    #bottom line checker
-    return False 
+def recursiveDFS(current_node:Node, grid:Grid, words:list, used_words:list,positions:list, used_positions:list):
+    #Stopping condition
+    if current_node.layer == grid.grid_size:
+        print(f"Reached a leaf node ->{current_node.layer}|{current_node.position} with word {current_node.word}, used words = {used_words}, used_positions ={used_positions}")
+        return True
+    if current_node.word is not None:
+        used_words.append(current_node.word)
+    if current_node.position is not None:
+        used_positions.append(current_node.position)
+    ## Generate Candidate
+    for next_node in lazy_candidate_generation(current_node.layer+1, words, used_words,positions,used_positions):
+        if not recursiveDFS(next_node,grid,words,used_words, positions, used_positions):
+            print(f"Leaf not reached at layer->{next_node.layer} with word {next_node.word} and position {next_node.position}")
+            return False
+        
 
-def generate_candidates(depth, words_dictionary:dict):
-    """Lazy generator that yields words matching constraints"""
-    for word in words_dictionary.get(depth):
-        yield word
 
-def satisfies_constraints(word, grid):
-    """Prune: simple constraint - don't repeat words"""
-    return word not in grid
 
-#GPT GENERATED CODE BELOW    
+def lazy_candidate_generation(depth:int, words:list,used_words:list, positions:list, used_positions:list):
 
-# # A pretend "huge" dictionary
-# FAKE_DICTIONARY = [
-#     "apple", "angle", "arena", "badge", "baker", "cabin", "camel",
-#     "delta", "eagle", "fable", "gamma", "hello", "hotel", "igloo", "joker"
-# ]
+    filtered_words = [x for x in words if x not in used_words]
+    filtered_positions = [x for x in positions if x not in used_positions]
 
-# def generate_candidates(length, starting_letter):
-#     """Lazy generator that yields words matching constraints"""
-#     for word in FAKE_DICTIONARY:
-#         if len(word) == length and word.startswith(starting_letter):
-#             yield word
+    # print(f"Call on the lazy candidate generation ->filtered_words:{filtered_words} filtered_positions:{filtered_positions}")
 
-# def satisfies_constraints(word, grid):
-#     """Prune: simple constraint - don't repeat words"""
-#     return word not in grid
+    for position in filtered_positions:
+        for word in filtered_words:
 
-# def dfs(grid, depth, max_depth, word_lengths, starting_letters):
-#     if depth == max_depth:
-#         print("Found solution:", grid)
-#         return True  # stop after first solution (can be adapted)
+            next_node = Node(word,position, used_words_snapshot=used_words,layer=depth)
 
-#     length = word_lengths[depth]
-#     first_letter = starting_letters[depth]
-
-#     for candidate in generate_candidates(length, first_letter):
-#         if satisfies_constraints(candidate, grid):  # prune early
-#             grid.append(candidate)
-#             if dfs(grid, depth + 1, max_depth, word_lengths, starting_letters):
-#                 return True  # propagate success
-#             grid.pop()  # backtrack
-
-#     return False  # no valid candidate at this depth
-
-# # 🔧 Example usage
-# word_lengths = [5, 5, 5]             # each word must be 5 letters
-# starting_letters = ['a', 'b', 'c']   # each word must start with a different letter
-
-# dfs(grid=[], depth=0, max_depth=3, word_lengths=word_lengths, starting_letters=starting_letters)
+            yield next_node

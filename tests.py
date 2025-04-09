@@ -1,5 +1,5 @@
 from grid import Grid
-from node import Node
+from DFSNode import Node
 from dfs import basicDFS, DFS_len_filter, recursiveDFS
 import pandas as pd
 from collections import defaultdict
@@ -10,7 +10,7 @@ test_grid_input = {
     2: [("A",3,{1:"1D(3)"})]
 }
 # small_grid = {
-#     1:[("A", 3,{1:"1D(1)",3:"2D(1)"}), ("D",3,{1:"1A(3)",3:"5A(3)"})]
+#     1:[("A", 3,{1:"1D(1)",3:"2D(1)"}), ("D",3,{1:"1A(3)",3:"5A(3)",5:"7A(1)",7:"10A(1)"})]
 #     2:
 #     3:
 #     4:
@@ -23,7 +23,7 @@ test_grid_input = {
 #     11:
 # }
 # test_avaliable_words = ["Dog", "Dad", "Day", "Buy", "Map","Sun"]
-test_avaliable_words = [ "DAD","Abys", "DUD", "DBD","oooo","EEEEE","aaaaa","ZZZZZ","PPPPPPs","aaaaaa","BBBBBB","AAAADASDA"]
+# test_avaliable_words = [ "DAD","Abys", "DUD", "DBD","oooo","EEEEE","aaaaa","ZZZZZ","PPPPPPs","aaaaaa","BBBBBB","AAAADASDA"]
 
 with open('words_small.txt', 'r') as f:
     small_dictionary = [line.split(',') for line in f.read().splitlines()]
@@ -53,20 +53,7 @@ print(test_grid.generated_grid)
 print("-------Grid total size")
 print(test_grid.grid_size)
 
-## Test for adding nodes
-# node_1 = Node(None, "Teste", "2A")
-# node_2 = Node(None, "Outro teste", "2A")
 
-# test_grid.addNodeToGrid(node_1)
-# test_grid.addNodeToGrid(node_2)
-
-# print("-------Generated grid")
-# print(test_grid.generated_grid)
-# print(test_grid.generated_grid["1A"]['word'])
-starting_node = Node(None,None)
-node_1 = Node("Dog", "1A", parent= starting_node)
-node_2 = Node("Dad", "1D", parent=node_1)
-node_3 = Node("Day", "2A", parent=node_2)
 
 #test_grid.check_solving(node_3)
 #print("TEST GRID RESULT :",test_grid.check_solving(node_3))
@@ -83,9 +70,9 @@ node_3 = Node("Day", "2A", parent=node_2)
 
 
 # print(test_grid.check_stopping_condition())
-# ## -------------Testing on DFS
+## -------------Testing on DFS
 # print(f"{node_1==node_4}")
-# DFS_len_filter(test_grid,small_dictionary)
+DFS_len_filter(test_grid,small_dictionary)
 
 
 # print(len(small_dictionary))
@@ -106,8 +93,18 @@ node_3 = Node("Day", "2A", parent=node_2)
 # print(test_grid.word_conditions)
 
 # loading()
-print("-------Testing")
+# print("-------Testing")
 
-print("produced dictionary")
-for length, words in length_dict.items():
-    print(f"Length {length}: {len(words)}")
+# print("produced dictionary")
+# for length, words in length_dict.items():
+#     print(f"Length {length}: {len(words)}")
+
+# test_avaliable_words = ["Dog", "Dad", "Day", "map", "sun", "buy"]
+# root_node = Node(None, None)
+# unexplored_nodes = [root_node]
+# used_words = []
+# used_positions = []
+# avaliable_positions = test_grid.get_avaliable_positions_on_grid()
+# recursiveDFS(root_node,test_grid,test_avaliable_words,used_words, avaliable_positions, used_positions)
+
+

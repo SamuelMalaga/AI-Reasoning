@@ -1,4 +1,4 @@
-from node import Node
+from DFSNode import Node
 import re
 
 class Grid:
@@ -207,3 +207,31 @@ class Grid:
         for k,v in self.generated_grid.items():
             print(f"for position {k}, word {v}")
         return""
+    
+    ##Iadded this one for BFS
+    # is_valid_placement en grid.py
+    def is_valid_placement(self, node: Node):
+        if node.word is None:
+            return False
+
+        if node.position not in self.generated_grid:
+            return False
+
+        expected_length = self.generated_grid[node.position]['lenght']
+        if len(node.word) != expected_length:
+            return False
+
+        # Check crossing constraints
+        cross_constraints = self.generated_grid[node.position]['cross_positions']
+        for char_position, cross_at in cross_constraints.items():
+            match_pos = self._extract_word_grid_position(cross_at)
+            match_index = self._extract_word_grid_char_position(cross_at)
+            
+            if self.generated_grid.get(match_pos, {}).get('word') is not None:
+                match_word = self.generated_grid[match_pos]['word']
+                if match_index >= len(match_word) or char_position - 1 >= len(node.word):
+                    return False
+                if node.word[char_position - 1].upper() != match_word[match_index].upper():
+                    return False
+
+        return True
