@@ -1,5 +1,5 @@
 from grid import Grid
-from DFSNode import Node
+from node_DFS import Node
 import itertools
 import pandas as pd
 import time
@@ -98,73 +98,3 @@ def basicBFS(grid: Grid, available_words: list):
     print(" Deepest attempt:")
     print_solution_path(deepest_node)
     return None
-
-'''
-
-def BFS_len_filter(grid: Grid, available_words: list):
-    available_positions = grid.get_avaliable_positions_on_grid()
-    df_available_words = pd.DataFrame(available_words, columns=['words'])
-
-    # words filter to see that the words have the required lenght
-    length_restrictions = grid.lenghts_restrictions_in_grid()
-    df_available_words = df_available_words[df_available_words['words'].str.len().isin(length_restrictions)]
-
-    used_words = []
-    starting_node = Node(None, None, starting_node=True)
-
-    execution_queue = deque([starting_node])
-    current_node = starting_node
-    count = 0
-
-    while len(execution_queue) != 0:
-        count += 1
-
-        if current_node.layer != 0:
-            available_positions.remove(current_node.position)
-            used_words.append(current_node.word)
-
-        # filter for words that haven't been used
-        filtered_words = df_available_words[~df_available_words['words'].isin(used_words)]
-
-        # this one is for position
-        if current_node.layer != 0:
-            expected_length = grid.get_lenght_position_restrictions(current_node.position)
-            filtered_words = filtered_words[filtered_words['words'].str.len() == expected_length]
-
-        filtered_words = filtered_words['words'].tolist()
-
-        possible_children = [
-            Node(
-                word,
-                position,
-                parent=current_node,
-                positions_snapshot=available_positions[:],
-                used_words_snapshot=used_words[:],
-                layer=current_node.layer + 1
-            )
-            for word, position in itertools.product(filtered_words, available_positions)
-        ]
-
-        execution_queue.extend(possible_children)
-        next_node = execution_queue.popleft()
-
-        if next_node.starting_node:
-            print("Starting node reached, no solution found")
-            break
-
-        available_positions = next_node.positions_snapshot.copy()
-        used_words = next_node.used_words_snapshot.copy()
-
-        if current_node.layer == grid.grid_size:
-            if grid.check_solving(current_node):
-                print(f"Found a solution: {current_node}")
-                break
-            else:
-                print(f"No solution at layer {current_node.layer}, backtracking to node {next_node}")
-
-        current_node = next_node
-        print(f"Iteration count -> {count}")
-
-
-
-'''

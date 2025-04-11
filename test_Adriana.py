@@ -1,8 +1,8 @@
 from grid import *
-from BFSNode import *
-from bfs import *
+from node_BFS import *
+from algorithm_bfs import *
 import pandas as pd
-import time  # Importar el módulo time para medir el tiempo de ejecución
+import time  
 
 # Define el grid de prueba
 test_grid_input = {

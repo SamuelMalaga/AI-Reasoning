@@ -1,6 +1,6 @@
 from grid import Grid
-from DFSNode import Node
-from dfs import basicDFS, DFS_len_filter, recursiveDFS
+from node_DFS import Node
+from algorithm_dfs import basicDFS, DFS_len_filter, recursiveDFS
 import pandas as pd
 from collections import defaultdict
 
@@ -9,6 +9,7 @@ test_grid_input = {
     1: [("A",3,{1:"1D(1)"}),("d",3,{1:"1A(1)",3:"2A(1)"})],
     2: [("A",3,{1:"1D(3)"})]
 }
+
 # small_grid = {
 #     1:[("A", 3,{1:"1D(1)",3:"2D(1)"}), ("D",3,{1:"1A(3)",3:"5A(3)",5:"7A(1)",7:"10A(1)"})]
 #     2:

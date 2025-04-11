@@ -1,5 +1,5 @@
 from grid import Grid
-from DFSNode import Node
+from node_DFS import Node
 import itertools
 import pandas as pd
 import time

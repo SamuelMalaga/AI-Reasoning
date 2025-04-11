@@ -1,4 +1,4 @@
-from DFSNode import Node
+from node_DFS import Node
 import re
 
 class Grid:
