@@ -60,13 +60,13 @@ def basicBFS(grid: Grid, available_words: list):
                 test_node = Node(word, position)
                 if not grid.is_valid_placement(test_node):
                     continue
-
+                '''
                 print(f"   Trying word: {word} at position {position}")
                 print(f"   -> Used words: {used_words + [word]}")
                 print(f"   -> Available positions: {available_positions}")
                 print(f"   -> Layer: {current_node.layer + 1}")
                 print(f"   -> Expected word length: {expected_length}")
-
+                '''
                 child = Node(
                     word,
                     position,
@@ -78,7 +78,7 @@ def basicBFS(grid: Grid, available_words: list):
 
                 # Here it verifies if the position is already in use before putting a word
                 if grid.generated_grid[position]["word"] is not None:
-                    print(f"The position {position} is already occupied")
+                    #print(f"The position {position} is already occupied")
                     continue  # Here it gets out of the loop and it doesnt add the word to this position
 
                 grid.addWordToGrid(child)
@@ -94,7 +94,7 @@ def basicBFS(grid: Grid, available_words: list):
 
     # In case it doesn't find a solution
     deepest_node = current_node  # just to be sure, we refresh this one
-    print(" No solution found.")
-    print(" Deepest attempt:")
-    print_solution_path(deepest_node)
+    #print(" No solution found.")
+    #print(" Deepest attempt:")
+    #print_solution_path(deepest_node)
     return None
